@@ -218,9 +218,9 @@ Execution time was measured in nanoseconds.
 
 | Vertices | BFS Time (ns) | DFS Time (ns) |
 |---:|---:|---:|
-| 10 | 315800 | 289900 |
-| 30 | 914400 | 824900 |
-| 100 | 104200 | 152000 |
+| 10 | 100300   | 113000 |
+| 30 | 161900 | 239600 |
+| 100 | 355800 | 414300 |
 
 > Note: The exact time can be different on another computer because it depends on hardware and current system load.
 
