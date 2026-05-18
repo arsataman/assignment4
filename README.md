@@ -315,7 +315,7 @@ If DFS is implemented recursively, it can also cause stack overflow on very larg
 
 ### Graph Structure Output
 
-![Graph Structure Output](docs/capture_260517_153457.png)
+![Graph Structure Output](docs/p1.png)
 
 This screenshot shows the adjacency list representation of the small graph.
 
@@ -323,7 +323,7 @@ This screenshot shows the adjacency list representation of the small graph.
 
 ### BFS/DFS Traversal Output
 
-![BFS Traversal Output](docs/capture_260517_154337.png)
+![BFS Traversal Output](docs/p2.png)
 
 This screenshot shows BFS/DFS traversal starting from vertex `0`.
 
@@ -331,7 +331,7 @@ This screenshot shows BFS/DFS traversal starting from vertex `0`.
 
 ### Performance Results
 
-![Performance Results](docs/capture_260517_154510.png)
+![Performance Results](docs/p3.png)
 
 This screenshot shows the execution time comparison for graphs with 10, 30, and 100 vertices.
 

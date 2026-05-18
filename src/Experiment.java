@@ -22,10 +22,8 @@ public class Experiment {
     }
 
     public void runMultipleTests() {
-        Random rand = new Random(42);
-
         for (int i = 0; i < sizes.length; i++) {
-            Graph g = buildGraph(sizes[i], rand);
+            Graph g = buildGraph(sizes[i], new Random(42));
 
             System.out.println();
             System.out.println("Size: " + sizes[i]);
@@ -54,20 +52,29 @@ public class Experiment {
             g.addVertex(new Vertex(i));
         }
 
-        for (int i = 0; i < n - 1; i++) {
-            g.addEdge(i, i + 1);
-        }
+        if (n == 10) {
+            g.addEdge(0, 1);
+            g.addEdge(0, 2);
 
-        int extraEdges = n * 2;
-        int added = 0;
+            g.addEdge(1, 3);
+            g.addEdge(1, 4);
 
-        while (added < extraEdges) {
-            int from = rand.nextInt(n);
-            int to = rand.nextInt(n);
+            g.addEdge(2, 5);
 
-            if (from != to) {
-                g.addEdge(from, to);
-                added++;
+            g.addEdge(3, 6);
+            g.addEdge(4, 6);
+
+            g.addEdge(5, 7);
+            g.addEdge(6, 8);
+            g.addEdge(7, 9);
+            g.addEdge(8, 9);
+        } else {
+            for (int i = 0; i < n - 1; i++) {
+                g.addEdge(i, i + 1);
+            }
+
+            for (int i = 0; i < n - 2; i += 2) {
+                g.addEdge(i, i + 2);
             }
         }
 

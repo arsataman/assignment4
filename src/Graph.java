@@ -21,7 +21,6 @@ public class Graph {
             throw new IllegalArgumentException("Both vertices must exist before adding an edge.");
         }
 
-        // Directed edge: from -> to
         if (!adjacencyList.get(from).contains(to)) {
             adjacencyList.get(from).add(to);
             edges.add(new Edge(vertices.get(from), vertices.get(to)));
@@ -57,7 +56,6 @@ public class Graph {
         visited.add(start);
         queue.add(start);
 
-        // BFS uses queue and visits vertices level by level.
         while (!queue.isEmpty()) {
             int current = queue.poll();
             order.add(current);
@@ -85,7 +83,6 @@ public class Graph {
 
         stack.push(start);
 
-        // DFS uses stack and goes deeper before backtracking.
         while (!stack.isEmpty()) {
             int current = stack.pop();
 

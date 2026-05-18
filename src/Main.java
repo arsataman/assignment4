@@ -5,15 +5,14 @@ public class Main {
         Experiment experiment = new Experiment();
 
         System.out.println("Small Graph:");
-
         Graph smallGraph = Experiment.buildGraph(10, new Random(1));
-        smallGraph.printGraph();
 
+        smallGraph.printGraph();
         System.out.println();
+
         smallGraph.bfs(0);
         smallGraph.dfs(0);
 
-        System.out.println();
         experiment.runMultipleTests();
         experiment.printResults();
     }
