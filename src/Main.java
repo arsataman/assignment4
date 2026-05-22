@@ -13,6 +13,9 @@ public class Main {
         smallGraph.bfs(0);
         smallGraph.dfs(0);
 
+        System.out.println();
+        smallGraph.dijkstra(0);
+
         experiment.runMultipleTests();
         experiment.printResults();
     }

@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Graph {
     private Map<Integer, Vertex> vertices;
-    private Map<Integer, List<Integer>> adjacencyList;
+    private Map<Integer, List<Edge>> adjacencyList;
     private List<Edge> edges;
 
     public Graph() {
@@ -17,21 +17,44 @@ public class Graph {
     }
 
     public void addEdge(int from, int to) {
+        addEdge(from, to, 1);
+    }
+
+    public void addEdge(int from, int to, int weight) {
         if (!vertices.containsKey(from) || !vertices.containsKey(to)) {
             throw new IllegalArgumentException("Both vertices must exist before adding an edge.");
         }
 
-        if (!adjacencyList.get(from).contains(to)) {
-            adjacencyList.get(from).add(to);
-            edges.add(new Edge(vertices.get(from), vertices.get(to)));
+        if (weight < 0) {
+            throw new IllegalArgumentException("Dijkstra's Algorithm does not support negative edge weights.");
         }
+
+        for (Edge edge : adjacencyList.get(from)) {
+            if (edge.getDestination().getId() == to) {
+                return;
+            }
+        }
+
+        Edge edge = new Edge(vertices.get(from), vertices.get(to), weight);
+        adjacencyList.get(from).add(edge);
+        edges.add(edge);
     }
 
     public void printGraph() {
-        System.out.println("Graph structure using adjacency list:");
+        System.out.println("Weighted graph structure using adjacency list:");
 
         for (int vertex : adjacencyList.keySet()) {
-            System.out.println(vertex + " -> " + adjacencyList.get(vertex));
+            System.out.print(vertex + " -> ");
+
+            List<String> neighbors = new ArrayList<>();
+
+            for (Edge edge : adjacencyList.get(vertex)) {
+                int destination = edge.getDestination().getId();
+                int weight = edge.getWeight();
+                neighbors.add(destination + "(w=" + weight + ")");
+            }
+
+            System.out.println(neighbors);
         }
     }
 
@@ -60,7 +83,9 @@ public class Graph {
             int current = queue.poll();
             order.add(current);
 
-            for (int neighbor : adjacencyList.get(current)) {
+            for (Edge edge : adjacencyList.get(current)) {
+                int neighbor = edge.getDestination().getId();
+
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.add(neighbor);
@@ -90,10 +115,10 @@ public class Graph {
                 visited.add(current);
                 order.add(current);
 
-                List<Integer> neighbors = adjacencyList.get(current);
+                List<Edge> neighbors = adjacencyList.get(current);
 
                 for (int i = neighbors.size() - 1; i >= 0; i--) {
-                    int neighbor = neighbors.get(i);
+                    int neighbor = neighbors.get(i).getDestination().getId();
 
                     if (!visited.contains(neighbor)) {
                         stack.push(neighbor);
@@ -103,6 +128,102 @@ public class Graph {
         }
 
         return order;
+    }
+
+    public void dijkstra(int start) {
+        if (!vertices.containsKey(start)) {
+            System.out.println("Start vertex does not exist.");
+            return;
+        }
+
+        int maxId = Collections.max(vertices.keySet());
+        int[] distance = new int[maxId + 1];
+        int[] previous = new int[maxId + 1];
+        boolean[] visited = new boolean[maxId + 1];
+        int infinity = Integer.MAX_VALUE / 2;
+
+        Arrays.fill(distance, infinity);
+        Arrays.fill(previous, -1);
+
+        distance[start] = 0;
+
+        for (int i = 0; i < vertices.size(); i++) {
+            int current = findClosestUnvisitedVertex(distance, visited);
+
+            if (current == -1) {
+                break;
+            }
+
+            visited[current] = true;
+
+            for (Edge edge : adjacencyList.get(current)) {
+                int neighbor = edge.getDestination().getId();
+                int newDistance = distance[current] + edge.getWeight();
+
+                if (!visited[neighbor] && newDistance < distance[neighbor]) {
+                    distance[neighbor] = newDistance;
+                    previous[neighbor] = current;
+                }
+            }
+        }
+
+        printDijkstraResult(start, distance, previous, infinity);
+    }
+
+    private int findClosestUnvisitedVertex(int[] distance, boolean[] visited) {
+        int closestVertex = -1;
+        int shortestDistance = Integer.MAX_VALUE;
+
+        for (int vertex : vertices.keySet()) {
+            if (!visited[vertex] && distance[vertex] < shortestDistance) {
+                shortestDistance = distance[vertex];
+                closestVertex = vertex;
+            }
+        }
+
+        return closestVertex;
+    }
+
+    private void printDijkstraResult(int start, int[] distance, int[] previous, int infinity) {
+        System.out.println("Dijkstra shortest paths from vertex " + start + ":");
+        System.out.printf("%-10s %-15s %-25s%n", "Vertex", "Distance", "Path");
+
+        for (int vertex : vertices.keySet()) {
+            if (distance[vertex] == infinity) {
+                System.out.printf("%-10d %-15s %-25s%n", vertex, "INF", "Not reachable");
+            } else {
+                System.out.printf("%-10d %-15d %-25s%n", vertex, distance[vertex], buildPath(start, vertex, previous));
+            }
+        }
+    }
+
+    private String buildPath(int start, int target, int[] previous) {
+        List<Integer> path = new ArrayList<>();
+        int current = target;
+
+        while (current != -1) {
+            path.add(current);
+
+            if (current == start) {
+                break;
+            }
+
+            current = previous[current];
+        }
+
+        Collections.reverse(path);
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < path.size(); i++) {
+            result.append(path.get(i));
+
+            if (i < path.size() - 1) {
+                result.append(" -> ");
+            }
+        }
+
+        return result.toString();
     }
 
     public int getVertexCount() {

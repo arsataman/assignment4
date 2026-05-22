@@ -1,4 +1,5 @@
 # Assignment 4 – Graph Traversal and Representation System
+(`Bonus Tasks Explanation at the end`)
 
 ## A. Project Overview
 
@@ -392,3 +393,91 @@ Vertices   BFS (ns)        DFS (ns)
 
 ---
 
+## Bonus Task: Dijkstra's Algorithm
+
+For the bonus task, I implemented Dijkstra's Algorithm to find the shortest path from a starting vertex to all other vertices in a weighted graph.
+
+### Requirements Completed
+
+The graph was extended to support weighted edges.
+
+The `Edge` class was modified and now includes a `weight` field.
+
+The graph structure was updated to store weighted edges using an adjacency list.
+
+The following method was implemented:
+
+```java
+void dijkstra(int start)
+```
+
+### What Was Added
+
+The project now supports weighted edges using this method:
+
+```java
+addEdge(int from, int to, int weight)
+```
+
+Example:
+
+```java
+addEdge(0, 1, 4);
+```
+
+This means there is an edge from vertex `0` to vertex `1` with weight `4`.
+
+### How Dijkstra's Algorithm Works
+
+Dijkstra's Algorithm starts from one selected vertex and calculates the shortest distance from that vertex to all other vertices in the graph.
+
+The implementation uses an array for distances, an array for visited vertices, an array for previous vertices, and simple loops to find the closest unvisited vertex.
+
+A priority queue was not used because the bonus task allows a simple implementation with arrays and loops.
+
+### Important Rule
+
+Negative edge weights are not allowed.
+
+Dijkstra's Algorithm does not work correctly with negative edge weights, so the program checks that edge weights are not negative.
+
+### Example Usage
+
+```java
+smallGraph.dijkstra(0);
+```
+
+This runs Dijkstra's Algorithm starting from vertex `0`.
+
+### Example Output
+
+```text
+Dijkstra shortest paths from vertex 0:
+Vertex     Distance        Path
+0          0               0
+1          4               0 -> 1
+2          2               0 -> 2
+3          9               0 -> 1 -> 3
+4          14              0 -> 1 -> 4
+5          5               0 -> 2 -> 5
+6          11              0 -> 1 -> 3 -> 6
+7          13              0 -> 2 -> 5 -> 7
+8          15              0 -> 1 -> 3 -> 6 -> 8
+9          16              0 -> 1 -> 3 -> 6 -> 8 -> 9
+```
+
+### Complexity
+
+This implementation uses simple loops.
+
+Time complexity:
+
+```text
+O(V^2 + E)
+```
+
+Where `V` is the number of vertices and `E` is the number of edges.
+
+### Summary
+
+The bonus task was completed by adding weighted edges and implementing Dijkstra's Algorithm to calculate the shortest paths from a starting vertex to all other vertices in the graph.
